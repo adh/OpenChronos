@@ -2,6 +2,7 @@
 #define __INTRINSICS_H
 
 #include <signal.h>
+#include <stdint.h>
 
 typedef unsigned short istate_t;
 
@@ -16,7 +17,7 @@ extern "C"
                                              unsigned short __bound);
 
   /* Insert a delay with a specific number of cycles. */
-  void __delay_cycles(unsigned long __cycles);
+  void __delay_cycles(uint32_t __cycles);
 
 #ifdef __cplusplus
 }

@@ -40,6 +40,7 @@
 // Include section
 //pfs
 #include <intrinsics.h>
+#include <stdint.h>
 #include "../bluerobin/bm.h"
 
 #include <cc430x613x.h>
