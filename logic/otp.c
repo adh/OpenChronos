@@ -305,19 +305,22 @@ static int display_mode = 0; //show first 2 digits
 
 void otp_sx(u8 line)
 {
-	otp();
+//	otp();
+	display_mode = !display_mode;
 	display_otp(line, DISPLAY_LINE_UPDATE_PARTIAL);
 }
 
 void otp_switch(u8 line)
 {
-	display_mode = !display_mode;
+
 	display_otp(line, DISPLAY_LINE_UPDATE_PARTIAL);
 }
 
 void update_otp(u8 line, u8 update)
 {
 	otp();
+	display_mode = !display_mode;
+	display_otp(line, DISPLAY_LINE_UPDATE_PARTIAL);
 }
 
 #ifdef TEST_SHA1
@@ -392,16 +395,17 @@ void display_otp(u8 line, u8 update)
 
 		otp();
 
+		clear_line(LINE2);
 		if (!display_mode) {
 			display_symbol(LCD_SYMB_MAX, SEG_OFF);
-			int v = (last_val/10000) % 100;
-			str = itoa(v, 2, 0);
-			display_chars(LCD_SEG_L2_1_0, str, SEG_ON);
+			int v = (last_val/1000) % 1000;
+			str = itoa(v, 3, 0);
+			display_chars(LCD_SEG_L2_4_2, str, SEG_ON);
 		} else {
 			display_symbol(LCD_SYMB_MAX, SEG_ON);
-			int v = (last_val%10000);
-			str = itoa(v, 4, 0);
-			display_chars(LCD_SEG_L2_3_0, str, SEG_ON);
+			int v = (last_val%1000);
+			str = itoa(v, 3, 0);
+			display_chars(LCD_SEG_L2_2_0, str, SEG_ON);
 		}
 
 #ifdef TEST_SHA1
