@@ -327,7 +327,7 @@ void mx_altitude(u8 line)
 	if (sys.flag.use_metric_units)
 	{
 #endif
-#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) | defined(CONFIG_ALTITUDE_UNIT_METERS)
+#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) || defined(CONFIG_ALTITUDE_UNIT_METERS)
 		// Display "m" symbol
 		display_symbol(LCD_UNIT_L1_M, SEG_ON);
 
@@ -343,7 +343,7 @@ void mx_altitude(u8 line)
 	else // English units
 	{
 #endif
-#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) | defined(CONFIG_ALTITUDE_UNIT_FEET)
+#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) || defined(CONFIG_ALTITUDE_UNIT_FEET)
 		// Display "ft" symbol
 		display_symbol(LCD_UNIT_L1_FT, SEG_ON);
 		
@@ -378,7 +378,7 @@ void mx_altitude(u8 line)
 			if (!sys.flag.use_metric_units)
 			{
 #endif
-#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) | defined(CONFIG_ALTITUDE_UNIT_FEET)
+#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) || defined(CONFIG_ALTITUDE_UNIT_FEET)
 				altitude = convert_ft_to_m((s16)altitude);
 #endif
 #ifdef CONFIG_ALTITUDE_UNIT_SETTABLE
@@ -419,7 +419,7 @@ void mx_altitude(u8 line)
 void display_altitude(u8 line, u8 update)
 {
 	u8 * str;
-#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) | defined(CONFIG_ALTITUDE_UNIT_FEET)
+#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) || defined(CONFIG_ALTITUDE_UNIT_FEET)
 	s16 ft;
 #endif
 	
@@ -438,8 +438,9 @@ void display_altitude(u8 line, u8 update)
 		if (sys.flag.use_metric_units)
 		{
 #endif
-#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) | defined(CONFIG_ALTITUDE_UNIT_METERS)
+#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) || defined(CONFIG_ALTITUDE_UNIT_METERS)
 			// Display "m" symbol
+			display_symbol(LCD_UNIT_L1_FT, SEG_OFF);
 			display_symbol(LCD_UNIT_L1_M, SEG_ON);
 #endif
 #ifdef CONFIG_ALTITUDE_UNIT_SETTABLE
@@ -447,8 +448,9 @@ void display_altitude(u8 line, u8 update)
 		else
 		{
 #endif
-#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) | defined(CONFIG_ALTITUDE_UNIT_FEET)
+#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) || defined(CONFIG_ALTITUDE_UNIT_FEET)
 			// Display "ft" symbol
+			display_symbol(LCD_UNIT_L1_M, SEG_OFF);
 			display_symbol(LCD_UNIT_L1_FT, SEG_ON);
 #endif
 #ifdef CONFIG_ALTITUDE_UNIT_SETTABLE
@@ -466,7 +468,7 @@ void display_altitude(u8 line, u8 update)
 			if (sys.flag.use_metric_units)
 			{
 #endif
-#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) | defined(CONFIG_ALTITUDE_UNIT_METERS)
+#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) || defined(CONFIG_ALTITUDE_UNIT_METERS)
 				// Display altitude in xxxx m format, allow 3 leading blank digits
 				if (sAlt.altitude >= 0)
 				{
@@ -481,9 +483,9 @@ void display_altitude(u8 line, u8 update)
 				else
 				{
 #ifdef CONFIG_ALTI_ACCUMULATOR
-					str = itoa(sAlt.altitude*(-1), 4, 3);
-#else
 					str = itoa(sAlt.altitude*(-1), 5, 4);
+#else
+					str = itoa(sAlt.altitude*(-1), 4, 3);
 #endif
 					display_symbol(LCD_SYMB_ARROW_UP, SEG_OFF);
 					display_symbol(LCD_SYMB_ARROW_DOWN, SEG_ON);
@@ -494,10 +496,10 @@ void display_altitude(u8 line, u8 update)
 			else
 			{
 #endif
-#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) | defined(CONFIG_ALTITUDE_UNIT_FEET)
+#if defined(CONFIG_ALTITUDE_UNIT_SETTABLE) || defined(CONFIG_ALTITUDE_UNIT_FEET)
 				// Convert from meters to feet
 				ft = convert_m_to_ft(sAlt.altitude);
-#ifndef CONFIG_ALTI_ACCUMULATOR
+#ifdef CONFIG_ALTI_ACCUMULATOR
 				// Limit to 9999ft (3047m)
 				if (ft > 9999) ft = 9999;
 #endif
@@ -505,19 +507,19 @@ void display_altitude(u8 line, u8 update)
 				if (ft >= 0)
 				{
 #ifdef CONFIG_ALTI_ACCUMULATOR
-					str = itoa(ft, 4, 3);
-#else
 					str = itoa(ft, 5, 4);
+#else
+					str = itoa(ft, 4, 3);
 #endif
 					display_symbol(LCD_SYMB_ARROW_UP, SEG_ON);
 					display_symbol(LCD_SYMB_ARROW_DOWN, SEG_OFF);
 				}
 				else
 				{
-#ifdef CONFIG_ALTI_ACCUMULATOR
-					str = itoa(ft*(-1), 4, 3);
-#else
+#ifndef CONFIG_ALTI_ACCUMULATOR
 					str = itoa(ft*(-1), 5, 4);
+#else
+					str = itoa(ft*(-1), 4, 3);
 #endif
 					display_symbol(LCD_SYMB_ARROW_UP, SEG_OFF);
 					display_symbol(LCD_SYMB_ARROW_DOWN, SEG_ON);
