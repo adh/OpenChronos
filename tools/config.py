@@ -143,14 +143,26 @@ DATA["CONFIG_ALTITUDE"] = {
         "help": "Messures altitude"
         }
 
+DATA["CONFIG_ALTITUDE_UNIT_METERS"] = {
+        "name": "  Always show altitude in metres (-342 bytes)",
+        "depends": [],
+        "default": False,
+        "help": "Overrides any global unit setting"}
+
+DATA["CONFIG_ALTITUDE_UNIT_FEET"] = {
+        "name": "  Always show altitude in feet (-176 bytes)",
+        "depends": [],
+        "default": False,
+        "help": "Overrides any global unit setting/metric only mode"}
 
 DATA["CONFIG_VARIO"] = {
-        "name": "Combined with alti, gives vertical speed (478 bytes)",
+        "name": "  Vertical speed indicator (478 bytes)",
         "depends": [],
-        "default": False}
+        "default": False,
+        "help": "Must have altimeter enabled and active to function"}
 
 DATA["CONFIG_ALTI_ACCUMULATOR"] = {
-	"name": "Altitude accumulator (1068 bytes)",
+	"name": "  Altitude accumulator (1068 bytes)",
 	"depends": [],
 	"default": False,
 	"help": "If active take altitude measurement once per minute and accumulate all ascending vertical meters."
